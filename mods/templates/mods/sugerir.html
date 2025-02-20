@@ -1,0 +1,54 @@
+{% extends 'mods/base.html' %}
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 20px; gap: 40px;">
+    
+    <!-- Área de Sugestão -->
+    <div style="width: 45%; background: #222; padding: 20px; border-radius: 10px; display: flex; flex-direction: column; align-items: center;">
+        <h2 style="color: #FFA500; font-family: 'Press Start 2P', cursive; text-align: center;">Deixe aqui sua sugestão de mod</h2>
+        <form method="POST" action="{% url 'sugerir' %}">
+            {% csrf_token %}
+            <label for="descricao" style="color: white; font-size: 18px;">Digite sua sugestão:</label>
+            <textarea name="descricao" id="descricao" required style="width: 100%; height: 150px; font-size: 16px; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
+            <button type="submit" style="width: 100%; background: #ff4500; color: white; font-size: 18px; padding: 10px; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px;">Enviar Sugestão</button>
+        </form>       
+    </div>
+    
+    <!-- Área de Sugestões -->
+    <div style="width: 50%; background: #222; padding: 20px; border-radius: 10px;">
+        <h2 style="color: #FFA500; font-family: 'Press Start 2P', cursive; text-align: center;">Sugestões dos Usuários</h2>
+        
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+            {% for sugestao in sugestoes %}
+                <div style="background: #333; padding: 15px; border-radius: 5px; color: white; margin-bottom: 10px;">
+                    <strong style="color: #ffcc00;">{{ sugestao.usuario.username }}</strong>
+                    <p>{{ sugestao.descricao }}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                        <form method="POST" action="{% url 'like_sugestao' sugestao.id %}">
+                            {% csrf_token %}
+                            <button type="submit" style="background: none; border: none; cursor: pointer; color: #00ff00; font-size: 20px;">👍 {{ sugestao.likes }}</button>
+                        </form>
+                        <form method="POST" action="{% url 'dislike_sugestao' sugestao.id %}">
+                            {% csrf_token %}
+                            <button type="submit" style="background: none; border: none; cursor: pointer; color: #ff0000; font-size: 20px;">👎 {{ sugestao.dislikes }}</button>
+                        </form>
+                    </div>
+                </div>
+            {% empty %}
+                <p style="color: white; text-align: center;">Nenhuma sugestão ainda.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.querySelector("form");
+    form.addEventListener("submit", function() {
+        setTimeout(function() {
+            window.location.reload();
+        }, 500);  // Recarrega a página 0.5s após envio
+    });
+});
+</script>
+
+{% endblock %}
