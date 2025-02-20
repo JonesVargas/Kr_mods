@@ -112,3 +112,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 3600  # Sessão dura 1 hora
+# Configuração para envio de e-mails (Gmail)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'jnsvirtual1311@gmail.com'  # Substitua pelo seu e-mail
+EMAIL_HOST_PASSWORD = 'kpyp lwss rlkr ejqg'  # Substitua pela senha do seu e-mail
+
