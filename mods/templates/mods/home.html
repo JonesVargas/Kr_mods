@@ -1,0 +1,48 @@
+{% extends 'mods/base.html' %}
+
+{% block title %}Home - Meu Site de Mods{% endblock %}
+
+{% block content %}
+
+<div style="text-align: center; margin-top: 20px;">
+    <h3>Nos siga nas redes sociais</h3>
+    {% for rede in redes_sociais %}
+        <a href="{{ rede.link }}" target="_blank" style="margin: 0 10px;">
+            <img src="{{ rede.icone.url }}" alt="{{ rede.nome }}" title="{{ rede.nome }}" 
+                 style="width: 60px; height: 60px; border-radius: 50%; transition: 0.3s;">
+        </a>
+    {% empty %}
+        <p style="color: white;">Nenhuma rede social cadastrada.</p>
+    {% endfor %}
+</div>
+
+{% for secao in secoes %}
+    <section>
+        <h2 class="title-container">{{ secao.titulo }}</h2>
+
+        <div>
+            {% for conteudo in secao.conteudos.all %}
+                <div class="image-text-container">
+                    {% if conteudo.imagem %}
+                        <img src="{{ conteudo.imagem.url }}" alt="{{ conteudo.titulo }}">
+                    {% endif %}
+                    <div class="text-content">
+                        <h3>{{ conteudo.titulo }}</h3>
+                        <p>{{ conteudo.descricao }}</p>
+                        {% if conteudo.video %}
+                        <a href="{{ conteudo.video }}">
+                            <button class="button">Assistir Vídeo</button> 
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <p>Sem conteúdos adicionados nesta seção ainda.</p>
+            {% endfor %}
+        </div>
+    </section>
+{% empty %}
+    <p>Nenhuma seção foi adicionada ainda.</p>
+{% endfor %}
+
+{% endblock %}

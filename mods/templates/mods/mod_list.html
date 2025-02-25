@@ -1,0 +1,45 @@
+{% extends 'mods/base.html' %}
+
+{% block title %}Lista de Mods{% endblock %}
+
+{% block content %}
+    <h2 style="font-family: 'Press Start 2P', cursive;">Mods Disponíveis</h2>
+
+    <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+        {% for mod in mods %}
+            <div class="mod-card">
+                <h3>{{ mod.title }}</h3>
+
+                {% if mod.image %}
+                    <img src="{{ mod.image.url }}" alt="{{ mod.title }}">
+                {% endif %}
+
+                <p>{{ mod.description }} </p>
+               
+                {% if mod.youtube_link %}
+                    <a href="{{ mod.youtube_link }}" target="_blank">
+                        <button class="button">Saber Mais</button>
+                    </a>
+                {% endif %}
+                                
+
+                {% if user.is_authenticated %}
+                    {% if mod.is_free %}
+                        <a href="{% url 'download_mod' mod.id %}">
+                            <button class="button">Baixar Grátis</button> 
+                        </a>
+                    {% else %}
+                        <a href="{% url 'purchase_mod' mod.id %}">
+                            <button class="button">Comprar por R$ {{ mod.price }}</button>
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <p style="color: red;">Você precisa estar logado para baixar mods.</p>
+                    <a href="{% url 'login' %}"><button class="button">Entrar</button></a>
+                    <a href="{% url 'register' %}"><button class="button">Cadastrar</button></a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

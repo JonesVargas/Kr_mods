@@ -1,0 +1,26 @@
+{% extends 'mods/base.html' %}
+
+{% block title %}Meus Mods Comprados{% endblock %}
+
+{% block content %}
+    <h2>Meus Mods Comprados</h2>
+    
+    {% if purchases %}
+        <ul>
+            {% for purchase in purchases %}
+                <li>
+                    <h3>{{ purchase.mod.title }}</h3>
+                    {% if purchase.mod.image %}
+                        <img src="{{ purchase.mod.image.url }}" alt="{{ purchase.mod.title }}" width="200">
+                    {% endif %}
+                    <p>{{ purchase.mod.description }}</p>
+                    <a href="{% url 'download_mod' purchase.mod.id %}">Baixar</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Você ainda não comprou nenhum mod.</p>
+    {% endif %}
+
+    <a href="{% url 'mod_list' %}">Voltar para a Lista de Mods</a>
+{% endblock %}

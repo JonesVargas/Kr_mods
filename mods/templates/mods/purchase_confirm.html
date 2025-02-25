@@ -1,0 +1,16 @@
+{% extends 'mods/base.html' %}
+
+{% block title %}Confirmar Compra{% endblock %}
+
+{% block content %}
+    <h2>Confirmar Compra</h2>
+    <p>Você está prestes a comprar o mod <strong>{{ mod.title }}</strong> por R$ {{ mod.price }}.</p>
+    <p>Deseja continuar?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Comprar</button>
+    </form>
+
+    <a href="{% url 'mod_list' %}">Cancelar</a>
+{% endblock %}

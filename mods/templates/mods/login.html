@@ -1,0 +1,24 @@
+{% extends 'mods/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <h2>Login</h2>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li style="color: red;">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Entrar</button>
+        <p><a href="{% url 'password_reset' %}">Esqueceu sua senha?</a></p>
+    </form>
+
+    <p>Ainda não tem uma conta? <a href="{% url 'register' %}">Cadastre-se aqui</a></p>
+{% endblock %}
