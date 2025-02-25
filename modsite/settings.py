@@ -1,5 +1,31 @@
 import os
 from pathlib import Path
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+from cloudinary_storage.storage import RawMediaCloudinaryStorage
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dvd7rkwyu',
+    'API_KEY': '416561564897632',
+    'API_SECRET': 'xOlGgthqR_2IqdhFnnI54WtJYt8'
+}
+
+
+
+
+
+
+
+
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# Configuração de arquivos estáticos e mídia
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
@@ -97,9 +123,8 @@ USE_TZ = True
 
 
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Pasta onde as imagens serão armazenadas
 
+MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
