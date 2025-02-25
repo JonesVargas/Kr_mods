@@ -1,7 +1,8 @@
 import os
 from pathlib import Path
 import cloudinary
-import cloudinary_storage
+import cloudinary.uploader
+import cloudinary.api
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
