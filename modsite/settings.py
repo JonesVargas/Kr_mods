@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mods',  # Adicionando nosso app mods
     'cloudinary_storage',
-    'cloudnary',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
