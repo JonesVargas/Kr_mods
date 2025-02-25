@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-import cloudinary
+import cloudinary  # Correto
 import cloudinary.uploader
 import cloudinary.api
 
