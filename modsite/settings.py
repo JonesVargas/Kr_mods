@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+import cloudinary
+import cloudinary_storage
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,6 +31,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mods',  # Adicionando nosso app mods
+    'cloudinary_storage',
+    'cloudnary',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +141,11 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'jnsvirtual1311@gmail.com'  # Substitua pelo seu e-mail
 EMAIL_HOST_PASSWORD = 'kpyp lwss rlkr ejqg'  # Substitua pela senha do seu e-mail
 
+cloudinary.config( 
+    cloud_name = "dvd7rkwyu", 
+    api_key = "416561564897632", 
+    api_secret = "xOlGgthqR_2IqdhFnnI54WtJYt8", # Click 'View API Keys' above to copy your API secret
+    secure=True
+)
+
+DEFAULT_FILE_STORAGE  =  'cloudinary_storage.storage.MediaCloudinaryStorage'
