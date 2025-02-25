@@ -1,0 +1,1 @@
+web: gunicorn modsite.wsgi --log-file -
