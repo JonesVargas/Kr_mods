@@ -1,35 +1,11 @@
 import os
 from pathlib import Path
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-from cloudinary_storage.storage import RawMediaCloudinaryStorage
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dvd7rkwyu',
-    'API_KEY': '416561564897632',
-    'API_SECRET': 'xOlGgthqR_2IqdhFnnI54WtJYt8'
-}
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 
-
-
-
-
-
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# Configuração de arquivos estáticos e mídia
-
-
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -124,13 +100,13 @@ USE_TZ = True
 
 
 
+# Configuração de mídia
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Configuração de arquivos estáticos (já deve estar no seu código)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
