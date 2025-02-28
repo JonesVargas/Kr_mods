@@ -6,14 +6,34 @@ import os
 def get_upload_path(folder, instance, filename):
     return f'{folder}/{filename}'
 
+# Funções específicas para cada campo de imagem/arquivo
+def mod_image_upload_path(instance, filename):
+    return get_upload_path('mods/images', instance, filename)
+
+def mod_file_upload_path(instance, filename):
+    return get_upload_path('mods', instance, filename)
+
+def homepage_logo_upload_path(instance, filename):
+    return get_upload_path('homepage', instance, filename)
+
+def apresentacao_imagem_upload_path(instance, filename):
+    return get_upload_path('homepage/imagens', instance, filename)
+
+def noticia_imagem_upload_path(instance, filename):
+    return get_upload_path('homepage/noticias', instance, filename)
+
+def section_content_image_upload_path(instance, filename):
+    return get_upload_path('homepage/conteudos', instance, filename)
+
+def rede_social_icone_upload_path(instance, filename):
+    return get_upload_path('redes_sociais', instance, filename)
+
+
 class Mod(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    file = models.FileField(upload_to=lambda instance, filename: get_upload_path('mods', instance, filename))
-    image = models.ImageField(
-        upload_to=lambda instance, filename: get_upload_path('mods/images', instance, filename),
-        null=True, blank=True
-    )
+    file = models.FileField(upload_to=mod_file_upload_path)
+    image = models.ImageField(upload_to=mod_image_upload_path, null=True, blank=True)
     youtube_link = models.URLField(null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -44,7 +64,7 @@ class Profile(models.Model):
 
 
 class HomePage(models.Model):
-    logo = models.ImageField(upload_to=lambda instance, filename: get_upload_path('homepage', instance, filename), null=True, blank=True)
+    logo = models.ImageField(upload_to=homepage_logo_upload_path, null=True, blank=True)
     apresentacao_texto = models.TextField()
 
     def __str__(self):
@@ -53,7 +73,7 @@ class HomePage(models.Model):
 
 class ApresentacaoImagem(models.Model):
     homepage = models.ForeignKey(HomePage, on_delete=models.CASCADE, related_name="apresentacao_imagens")
-    imagem = models.ImageField(upload_to=lambda instance, filename: get_upload_path('homepage/imagens', instance, filename))
+    imagem = models.ImageField(upload_to=apresentacao_imagem_upload_path)
     descricao = models.TextField()
 
     def __str__(self):
@@ -63,10 +83,7 @@ class ApresentacaoImagem(models.Model):
 class Noticia(models.Model):
     homepage = models.ForeignKey(HomePage, on_delete=models.CASCADE, related_name="noticias")
     titulo = models.CharField(max_length=255)
-    imagem = models.ImageField(
-        upload_to=lambda instance, filename: get_upload_path('homepage/noticias', instance, filename),
-        null=True, blank=True
-    )
+    imagem = models.ImageField(upload_to=noticia_imagem_upload_path, null=True, blank=True)
     video = models.URLField(null=True, blank=True)
     descricao = models.TextField()
 
@@ -91,10 +108,7 @@ class SectionContent(models.Model):
     section = models.ForeignKey(HomePageSection, on_delete=models.CASCADE, related_name="conteudos")
     titulo = models.CharField(max_length=255)
     descricao = models.TextField()
-    imagem = models.ImageField(
-        upload_to=lambda instance, filename: get_upload_path('homepage/conteudos', instance, filename),
-        null=True, blank=True
-    )
+    imagem = models.ImageField(upload_to=section_content_image_upload_path, null=True, blank=True)
     video = models.URLField(null=True, blank=True)
     ordem = models.PositiveIntegerField(default=0)
 
@@ -132,7 +146,7 @@ class SugestaoMod(models.Model):
 
 class RedeSocial(models.Model):
     nome = models.CharField(max_length=50, unique=True)
-    icone = models.ImageField(upload_to=lambda instance, filename: get_upload_path('redes_sociais', instance, filename))
+    icone = models.ImageField(upload_to=rede_social_icone_upload_path)
     link = models.URLField()
 
     def __str__(self):
