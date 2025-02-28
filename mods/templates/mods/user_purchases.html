@@ -6,15 +6,19 @@
     <h2>Meus Mods Comprados</h2>
     
     {% if purchases %}
-        <ul>
+        <ul style="list-style-type: none; padding: 0; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
             {% for purchase in purchases %}
-                <li>
+                <li style="background: #1e1e1e; padding: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); max-width: 300px;">
                     <h3>{{ purchase.mod.title }}</h3>
-                    {% if purchase.mod.image %}
-                        <img src="{{ purchase.mod.image.url }}" alt="{{ purchase.mod.title }}" width="200">
+                    {% if purchase.mod.image and purchase.mod.image.url %}
+                        <img src="{{ purchase.mod.image.url }}" alt="{{ purchase.mod.title }}" 
+                             style="width: 100%; height: 150px; object-fit: cover; border-radius: 5px;">
+                    {% else %}
+                        <img src="https://via.placeholder.com/300x150" alt="Imagem não disponível"
+                             style="width: 100%; height: 150px; object-fit: cover; border-radius: 5px;">
                     {% endif %}
                     <p>{{ purchase.mod.description }}</p>
-                    <a href="{% url 'download_mod' purchase.mod.id %}">Baixar</a>
+                    <a href="{% url 'download_mod' purchase.mod.id %}" class="button" style="text-decoration: none; display: inline-block; margin-top: 10px;">Baixar</a>
                 </li>
             {% endfor %}
         </ul>
@@ -22,5 +26,5 @@
         <p>Você ainda não comprou nenhum mod.</p>
     {% endif %}
 
-    <a href="{% url 'mod_list' %}">Voltar para a Lista de Mods</a>
+    <a href="{% url 'mod_list' %}" class="button" style="margin-top: 20px; display: inline-block;">Voltar para a Lista de Mods</a>
 {% endblock %}

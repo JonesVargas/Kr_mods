@@ -5,16 +5,15 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 from dotenv import load_dotenv
+
+# Carregar variáveis do .env (apenas em desenvolvimento local, no Heroku isso não é necessário)
 load_dotenv()
-
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-
 
 # Diretório base do projeto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Segurança
-SECRET_KEY = os.getenv('SECRET_KEY', 'chave-secreta-de-desenvolvimento')
+SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['127.0.0.1', 'kr-mods-d517b12a9a57.herokuapp.com', 'krsoftwares.com.br']
@@ -57,8 +56,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'mods.context_processors.get_logo',  # Context Processor customizado
-                'mods.context_processors.redes_sociais',  # Outro contexto customizado
+                'mods.context_processors.get_logo',
+                'mods.context_processors.redes_sociais',
             ],
         },
     },
@@ -85,21 +84,12 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Configuração de arquivos estáticos no Heroku
+# Arquivos estáticos no Heroku
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Configuração de armazenamento no Cloudinary
-cloudinary.config(
-    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME', 'dvd7rkwyu'),
-    api_key=os.getenv('CLOUDINARY_API_KEY', '416561564897632'),
-    api_secret=os.getenv('CLOUDINARY_API_SECRET', 'xOlGgthqR_2IqdhFnnI54WtJYt8'),
-    secure=True
-)
-
-# Armazenamento de arquivos de mídia no Cloudinary
+# Armazenamento de arquivos de mídia no Cloudinary (UPLOADS)
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-MEDIA_URL = '/media/'  # Mantemos para referência, mas não é necessário para Cloudinary
 
 # Configuração de login e sessão
 LOGIN_REDIRECT_URL = '/'
@@ -114,8 +104,16 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'jnsvirtual1311@gmail.com'
-EMAIL_HOST_PASSWORD = 'kpyp lwss rlkr ejqg'  # 🚨 **Não exponha credenciais no código! Use variáveis de ambiente**
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 # Configuração padrão para novos modelos do Django
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Configuração de armazenamento no Cloudinary - 100% usando variáveis de ambiente
+cloudinary.config(
+    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.getenv('CLOUDINARY_API_KEY'),
+    api_secret=os.getenv('CLOUDINARY_API_SECRET'),
+    secure=True
+)

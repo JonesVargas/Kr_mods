@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Mods para Games{% endblock %}</title>
     <style>
-        /* Fonte Gamer */
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-        /* Estilo Geral */
         body {
             background-color: #121212;
             color: white;
@@ -18,7 +16,6 @@
             text-align: center;
         }
 
-        /* Navbar */
         .navbar {
             background: linear-gradient(90deg, #ff8c00, #ff0080);
             padding: 15px;
@@ -44,14 +41,12 @@
             max-height: 50px;
         }
 
-        /* Container principal */
         .container {
             width: 90%;
             margin: auto;
             padding: 20px;
         }
 
-        /* Botões */
         .button {
             background: #ff4500;
             color: white;
@@ -67,7 +62,13 @@
             background: #ff8c00;
         }
 
-        /* Cartões de Mods */
+        .mod-card-link {
+            text-decoration: none;
+            color: inherit;
+            width: 100%;
+            max-width: 300px;
+        }
+
         .mod-card {
             background: #1e1e1e;
             padding: 20px;
@@ -88,7 +89,6 @@
             border-radius: 10px;
         }
 
-        /* Rodapé */
         footer {
             background: #1a1a1a;
             padding: 10px;
@@ -97,7 +97,6 @@
             margin-top: 30px;
         }
 
-        /* Layout de Imagem e Texto */
         .image-text-container {
             display: flex;
             align-items: center;
@@ -132,10 +131,9 @@
 </head>
 <body>
 
-    <!-- Navbar -->
     <div class="navbar">
         <div>
-            {% if homepage.logo %}
+            {% if homepage and homepage.logo %}
                 <img src="{{ homepage.logo.url }}" alt="Logo do Site" class="logo">
             {% else %}
                 <h2 style="font-family: 'Press Start 2P', cursive;">KR Mods</h2>

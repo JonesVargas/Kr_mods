@@ -13,9 +13,11 @@ from django.views.decorators.cache import never_cache
 
 def home(request):
     secoes = HomePageSection.objects.prefetch_related("conteudos").all()
+    redes_sociais = RedeSocial.objects.all()
 
     context = {
         'secoes': secoes,
+        'redes_sociais': redes_sociais,  # Adicionado aqui!
     }
 
     return render(request, 'mods/home.html', context)
