@@ -1,1 +1,1 @@
-web: gunicorn kr_mods-main.wsgi --log-file -
+web: gunicorn modsite.wsgi --log-file -
