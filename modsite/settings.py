@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Segurança
 SECRET_KEY = os.getenv('SECRET_KEY')
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = "False"
 
 ALLOWED_HOSTS = ['127.0.0.1', 'kr-mods-d517b12a9a57.herokuapp.com', 'krsoftwares.com.br']
 
@@ -67,6 +67,7 @@ WSGI_APPLICATION = 'modsite.wsgi.application'
 
 # Banco de Dados - Padrão Heroku PostgreSQL
 DATABASES = {
+    
     'default': dj_database_url.config(conn_max_age=600, conn_health_checks=True)
 }
 
@@ -115,5 +116,5 @@ cloudinary.config(
     cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
     api_key=os.getenv('CLOUDINARY_API_KEY'),
     api_secret=os.getenv('CLOUDINARY_API_SECRET'),
-    secure=True
+    secure=True,
 )
