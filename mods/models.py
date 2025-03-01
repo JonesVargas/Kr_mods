@@ -1,8 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 import os
+import logging
+from django.conf import settings
 
-# Helper para definir upload_to dinâmico, se quiser separar dev/staging/prod
+logger = logging.getLogger(__name__)
+
+# Helper para definir upload_to dinâmico
 def get_upload_path(folder, instance, filename):
     return f'{folder}/{filename}'
 
@@ -28,7 +32,6 @@ def section_content_image_upload_path(instance, filename):
 def rede_social_icone_upload_path(instance, filename):
     return get_upload_path('redes_sociais', instance, filename)
 
-
 class Mod(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -44,7 +47,6 @@ class Mod(models.Model):
     def __str__(self):
         return self.title
 
-
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     mod = models.ForeignKey(Mod, on_delete=models.CASCADE, related_name='comments')
@@ -54,14 +56,12 @@ class Comment(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.mod.title} - {self.text[:50]}..."
 
-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email = models.EmailField(unique=True)
 
     def __str__(self):
         return self.user.username
-
 
 class HomePage(models.Model):
     logo = models.ImageField(upload_to=homepage_logo_upload_path, null=True, blank=True)
@@ -70,7 +70,6 @@ class HomePage(models.Model):
     def __str__(self):
         return "Configuração da Página Inicial"
 
-
 class ApresentacaoImagem(models.Model):
     homepage = models.ForeignKey(HomePage, on_delete=models.CASCADE, related_name="apresentacao_imagens")
     imagem = models.ImageField(upload_to=apresentacao_imagem_upload_path)
@@ -78,7 +77,6 @@ class ApresentacaoImagem(models.Model):
 
     def __str__(self):
         return self.descricao[:50]
-
 
 class Noticia(models.Model):
     homepage = models.ForeignKey(HomePage, on_delete=models.CASCADE, related_name="noticias")
@@ -89,7 +87,6 @@ class Noticia(models.Model):
 
     def __str__(self):
         return self.titulo
-
 
 class HomePageSection(models.Model):
     titulo = models.CharField(max_length=255)
@@ -102,7 +99,6 @@ class HomePageSection(models.Model):
 
     def __str__(self):
         return self.titulo
-
 
 class SectionContent(models.Model):
     section = models.ForeignKey(HomePageSection, on_delete=models.CASCADE, related_name="conteudos")
@@ -117,9 +113,15 @@ class SectionContent(models.Model):
         verbose_name = "Conteúdo da Seção"
         verbose_name_plural = "Conteúdos das Seções"
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        
+        logger.warning(f"DEBUG - Salvando imagem: {self.imagem.name}")
+        logger.warning(f"DEBUG - Storage configurado: {settings.DEFAULT_FILE_STORAGE}")
+        logger.warning(f"DEBUG - URL após salvar: {self.imagem.url}")
+
     def __str__(self):
         return self.titulo
-
 
 class Purchase(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="purchases")
@@ -132,7 +134,6 @@ class Purchase(models.Model):
     def __str__(self):
         return f"{self.user.username} comprou {self.mod.title}"
 
-
 class SugestaoMod(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     descricao = models.TextField()
@@ -142,7 +143,6 @@ class SugestaoMod(models.Model):
 
     def __str__(self):
         return f"{self.usuario.username} - {self.descricao[:30]}"
-
 
 class RedeSocial(models.Model):
     nome = models.CharField(max_length=50, unique=True)
