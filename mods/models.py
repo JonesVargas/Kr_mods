@@ -1,36 +1,31 @@
 from django.db import models
 from django.contrib.auth.models import User
-import os
 import logging
 from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
-# Helper para definir upload_to dinâmico
-def get_upload_path(folder, instance, filename):
-    return f'{folder}/{filename}'
-
-# Funções específicas para cada campo de imagem/arquivo
+# Helpers para upload_to (sem pastas)
 def mod_image_upload_path(instance, filename):
-    return get_upload_path('mods/images', instance, filename)
+    return f'mod_{instance.id}_{filename}'
 
 def mod_file_upload_path(instance, filename):
-    return get_upload_path('mods', instance, filename)
+    return f'mod_file_{instance.id}_{filename}'
 
 def homepage_logo_upload_path(instance, filename):
-    return get_upload_path('homepage', instance, filename)
+    return f'logo_{filename}'
 
 def apresentacao_imagem_upload_path(instance, filename):
-    return get_upload_path('homepage/imagens', instance, filename)
+    return f'apresentacao_{instance.id}_{filename}'
 
 def noticia_imagem_upload_path(instance, filename):
-    return get_upload_path('homepage/noticias', instance, filename)
+    return f'noticia_{instance.id}_{filename}'
 
 def section_content_image_upload_path(instance, filename):
-    return get_upload_path('homepage/conteudos', instance, filename)
+    return f'conteudo_{instance.id}_{filename}'
 
 def rede_social_icone_upload_path(instance, filename):
-    return get_upload_path('redes_sociais', instance, filename)
+    return f'icone_{instance.nome}_{filename}'
 
 class Mod(models.Model):
     title = models.CharField(max_length=255)
