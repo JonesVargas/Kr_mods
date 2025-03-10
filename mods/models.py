@@ -1,39 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
-import logging
-from django.conf import settings
 
-logger = logging.getLogger(__name__)
-
-# Helpers para upload_to (caminhos diretos e simples, compatíveis com migrações e Cloudinary)
-
-def mod_image_upload_path(instance, filename):
-    return f'mod_{instance.id}_{filename}'
-
-def mod_file_upload_path(instance, filename):
-    return f'mod_file_{instance.id}_{filename}'
-
-def homepage_logo_upload_path(instance, filename):
-    return f'homepage_logo_{filename}'
-
-def apresentacao_imagem_upload_path(instance, filename):
-    return f'apresentacao_{instance.id}_{filename}'
-
-def noticia_imagem_upload_path(instance, filename):
-    return f'noticia_{instance.id}_{filename}'
-
-def section_content_image_upload_path(instance, filename):
-    return f'conteudo_{instance.id}_{filename}'
-
-def rede_social_icone_upload_path(instance, filename):
-    return f'icone_{instance.nome}_{filename}'
-
-# Modelos
 class Mod(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    file = models.FileField(upload_to=mod_file_upload_path)
-    image = models.ImageField(upload_to=mod_image_upload_path, null=True, blank=True)
+    file = models.FileField(upload_to="mod_files/")
+    image_url = models.URLField(verbose_name="URL da Imagem", blank=True, null=True)
     youtube_link = models.URLField(null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -64,7 +36,7 @@ class Profile(models.Model):
 
 
 class HomePage(models.Model):
-    logo = models.ImageField(upload_to=homepage_logo_upload_path, null=True, blank=True)
+    logo_url = models.URLField(verbose_name="URL do Logo", blank=True, null=True)
     apresentacao_texto = models.TextField()
 
     def __str__(self):
@@ -73,7 +45,7 @@ class HomePage(models.Model):
 
 class ApresentacaoImagem(models.Model):
     homepage = models.ForeignKey(HomePage, on_delete=models.CASCADE, related_name="apresentacao_imagens")
-    imagem = models.ImageField(upload_to=apresentacao_imagem_upload_path)
+    imagem_url = models.URLField(verbose_name="URL da Imagem")
     descricao = models.TextField()
 
     def __str__(self):
@@ -83,7 +55,7 @@ class ApresentacaoImagem(models.Model):
 class Noticia(models.Model):
     homepage = models.ForeignKey(HomePage, on_delete=models.CASCADE, related_name="noticias")
     titulo = models.CharField(max_length=255)
-    imagem = models.ImageField(upload_to=noticia_imagem_upload_path, null=True, blank=True)
+    imagem_url = models.URLField(verbose_name="URL da Imagem", blank=True, null=True)
     video = models.URLField(null=True, blank=True)
     descricao = models.TextField()
 
@@ -108,7 +80,7 @@ class SectionContent(models.Model):
     section = models.ForeignKey(HomePageSection, on_delete=models.CASCADE, related_name="conteudos")
     titulo = models.CharField(max_length=255)
     descricao = models.TextField()
-    imagem = models.ImageField(upload_to=section_content_image_upload_path, null=True, blank=True)
+    imagem_url = models.URLField(verbose_name="URL da Imagem", blank=True, null=True)
     video = models.URLField(null=True, blank=True)
     ordem = models.PositiveIntegerField(default=0)
 
@@ -116,12 +88,6 @@ class SectionContent(models.Model):
         ordering = ['ordem']
         verbose_name = "Conteúdo da Seção"
         verbose_name_plural = "Conteúdos das Seções"
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        logger.warning(f"DEBUG - Salvando imagem: {self.imagem.name}")
-        logger.warning(f"DEBUG - Storage configurado: {settings.DEFAULT_FILE_STORAGE}")
-        logger.warning(f"DEBUG - URL após salvar: {self.imagem.url}")
 
     def __str__(self):
         return self.titulo
@@ -152,8 +118,8 @@ class SugestaoMod(models.Model):
 
 class RedeSocial(models.Model):
     nome = models.CharField(max_length=50, unique=True)
-    icone = models.ImageField(upload_to=rede_social_icone_upload_path)
     link = models.URLField()
+    icone_url = models.URLField(verbose_name="URL do Ícone", help_text="Cole a URL da imagem no Cloudinary")
 
     def __str__(self):
         return self.nome

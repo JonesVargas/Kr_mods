@@ -62,13 +62,6 @@
             background: #ff8c00;
         }
 
-        .mod-card-link {
-            text-decoration: none;
-            color: inherit;
-            width: 100%;
-            max-width: 300px;
-        }
-
         .mod-card {
             background: #1e1e1e;
             padding: 20px;
@@ -163,6 +156,23 @@
 
     <div class="container">
         {% block content %}{% endblock %}
+    </div>
+
+    <!-- 🚀 Seção para Redes Sociais -->
+    <div style="text-align: center; margin-top: 20px;">
+        <h3>Nos siga nas redes sociais</h3>
+        {% for rede in redes_sociais %}
+            <a href="{{ rede.link }}" target="_blank" style="margin: 0 10px;">
+                {% if rede.icone %}
+                    <img src="{{ rede.icone.url }}" alt="{{ rede.nome }}" title="{{ rede.nome }}" 
+                         style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%; transition: 0.3s;">
+                {% else %}
+                    <p style="color: white;">Imagem não disponível</p>
+                {% endif %}
+            </a>
+        {% empty %}
+            <p style="color: white;">Nenhuma rede social cadastrada.</p>
+        {% endfor %}
     </div>
 
     <footer>

@@ -1,4 +1,4 @@
-{% extends 'mods/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}Lista de Mods{% endblock %}
 
@@ -19,13 +19,12 @@
                 {% endif %}
 
                 <p>{{ mod.description }}</p>
-               
+                
                 {% if mod.youtube_link %}
                     <a href="{{ mod.youtube_link }}" target="_blank">
                         <button class="button">Saber Mais</button>
                     </a>
                 {% endif %}
-                                
 
                 {% if user.is_authenticated %}
                     {% if mod.is_free %}
@@ -43,6 +42,8 @@
                     <a href="{% url 'register' %}"><button class="button">Cadastrar</button></a>
                 {% endif %}
             </div>
+        {% empty %}
+            <p style="color: white;">Nenhum mod disponível no momento.</p>
         {% endfor %}
     </div>
 {% endblock %}
