@@ -118,8 +118,8 @@ class SugestaoMod(models.Model):
 
 class RedeSocial(models.Model):
     nome = models.CharField(max_length=50, unique=True)
-    link = models.URLField()
-    icone_url = models.URLField(verbose_name="URL do Ícone", help_text="Cole a URL da imagem no Cloudinary")
+    icone = models.URLField()  # Agora armazena a URL da imagem
+    link = models.URLField()  # URL da rede social
 
     def __str__(self):
         return self.nome

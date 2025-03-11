@@ -1,5 +1,7 @@
 from django.contrib import admin
 from .models import *
+from django import forms
+import cloudinary.uploader
 
 # Exibir imagem no Django Admin
 from django.utils.html import format_html
@@ -79,17 +81,37 @@ class SugestaoModAdmin(admin.ModelAdmin):
     search_fields = ('descricao', 'usuario__username')
     list_filter = ('criado_em',)
 
+class RedeSocialForm(forms.ModelForm):
+    upload_icone = forms.ImageField(required=False, label="Upload Ícone")
+
+    class Meta:
+        model = RedeSocial
+        fields = ('nome', 'icone', 'link')
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+
+        # Se um novo ícone for enviado, faça o upload para o Cloudinary
+        if self.cleaned_data.get('upload_icone'):
+            result = cloudinary.uploader.upload(self.cleaned_data['upload_icone'])
+            instance.icone = result['secure_url']  # Salva a URL segura da imagem no banco
+
+        if commit:
+            instance.save()
+        return instance
+
 @admin.register(RedeSocial)
 class RedeSocialAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'link', 'rede_social_preview')  # Exibir nome, link e imagem no Django Admin
-    readonly_fields = ('rede_social_preview',)
+    form = RedeSocialForm
+    list_display = ('nome', 'icone_preview', 'link')
 
-    def rede_social_preview(self, obj):
+    def icone_preview(self, obj):
         if obj.icone:
-            return format_html('<img src="{}" style="width: 100px; height: auto;" />', obj.icone.url)
+            return f'<img src="{obj.icone}" width="50" height="50" style="border-radius: 50%;" />'
         return "Sem imagem"
 
-    rede_social_preview.short_description = "Ícone"
+    icone_preview.allow_tags = True
+    icone_preview.short_description = "Ícone"
 
 admin.site.register(HomePageSection, HomePageSectionAdmin)
 admin.site.register(HomePage, HomePageAdmin)
