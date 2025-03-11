@@ -129,16 +129,17 @@ def login_view(request):
         form = EmailLoginForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data.get("email")
-            user = User.objects.filter(email=email).first()
-
-            if user:
+            users = User.objects.filter(email=email)  # Busca usuários com o e-mail fornecido
+            
+            if users.exists():  # Se houver algum usuário com esse e-mail
+                user = users.first()  # Pega o primeiro usuário encontrado
+                
                 authenticated_user = authenticate(username=user.username, password=form.cleaned_data.get("password"))
 
                 if authenticated_user:
                     login(request, authenticated_user)
                     return redirect('home')
 
-            messages.error(request, "Credenciais inválidas. Verifique seu e-mail e senha.")
     else:
         form = EmailLoginForm()
 
